@@ -1,5 +1,5 @@
 FROM nginx
-MAINTAINER Azure App Service Container Images <appsvc-images@microsoft.com>
+MAINTAINER Jayachandra Lingam
 
 # ========
 # ENV vars
@@ -23,8 +23,8 @@ ENV PHP_HOME "/etc/php/7.0"
 ENV PHP_CONF_DIR $PHP_HOME"/cli"
 ENV PHP_CONF_FILE $PHP_CONF_DIR"/php.ini"
 # mariadb
-ENV MARIADB_DATA_DIR "/home/data/mysql"
-ENV MARIADB_LOG_DIR "/home/LogFiles/mysql"
+#ENV MARIADB_DATA_DIR "/home/data/mysql"
+#ENV MARIADB_LOG_DIR "/home/LogFiles/mysql"
 # phpmyadmin
 ENV PHPMYADMIN_SOURCE "/usr/src/phpmyadmin"
 ENV PHPMYADMIN_HOME "/home/phpmyadmin"
@@ -68,6 +68,16 @@ RUN set -ex \
         php7.0-gd \
         php7.0-dba \
         php7.0-mysql \
+	php7.0-cli \
+	php7.0-mbstring \
+	php7.0-pecl \
+	php7.0-recode \
+	php7.0-process \
+	php7.0-tidy \
+	php7.0-bcmath \
+	php7.0-pdo \
+	php7.0-recode \
+	php7.0-json \
 		php7.0-xml \
 	" \
     && apt-get update \
