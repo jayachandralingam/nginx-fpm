@@ -29,7 +29,7 @@ ENV PHP_CONF_FILE $PHP_CONF_DIR"/php.ini"
 ENV PHPMYADMIN_SOURCE "/usr/src/phpmyadmin"
 ENV PHPMYADMIN_HOME "/home/phpmyadmin"
 #Web Site Home
-ENV HOME_SITE "/home/site/wwwroot"
+ENV HOME_SITE "/home/site/wwwroot/gwapi.zee5.com"
 
 #
 ENV DOCKER_BUILD_HOME "/dockerbuild"
@@ -127,14 +127,14 @@ RUN set -ex \
 # =========
 # Configure
 # =========
-
+RUN mkdir -p /var/www/wwwroot/gwapi.zee5.com/
 RUN set -ex\
     && test ! -d /var/www && mkdir -p /var/www \
-	&& chown -R www-data:www-data /var/www \	
+	&& chown -R nginx:nginx /var/www \	
 	&& rm -rf /var/log/nginx \
 	&& ln -s $NGINX_LOG_DIR /var/log/nginx \
 	##
-    && ln -s ${HOME_SITE} /var/www/wwwroot \
+    && ln -s ${HOME_SITE} /var/www/wwwroot/gwapi.zee5.com \
     ##	
     && ln -s ${PHPMYADMIN_HOME} /var/www/phpmyadmin
 	
@@ -147,14 +147,18 @@ COPY sshd_config /etc/ssh/
 
 # nginx
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY hostingstart.html /home/site/wwwroot/index.html
+WORKDIR /home/site/wwwroot/
+ADD gwapi-apache gwapi.zee5.com
+WORKDIR /usr/share/nginx/html/gwapi.zee5.com/
+RUN rm .htaccess
+#COPY hostingstart.html /home/site/wwwroot/index.html
 
 # phpmyadmin
 #COPY phpmyadmin-config.inc.php $PHPMYADMIN_SOURCE/
 #COPY mariadb.cnf /etc/mysql/
 
-RUN \
-   echo "<?php phpinfo();" > /home/site/wwwroot/index.php 
+#RUN \
+#   echo "<?php phpinfo();" > /home/site/wwwroot/index.php 
 
 # =====
 # final
