@@ -131,11 +131,6 @@ RUN set -ex \
 RUN set -ex\
     && test ! -d /var/www && mkdir -p /var/www \
 	&& chown -R www-data:www-data /var/www \	
-	##
-	##
-	&& rm -rf /var/log/mysql \
-	&& ln -s $MARIADB_LOG_DIR /var/log/mysql \
-	##
 	&& rm -rf /var/log/nginx \
 	&& ln -s $NGINX_LOG_DIR /var/log/nginx \
 	##
@@ -147,16 +142,16 @@ RUN set -ex\
 COPY sshd_config /etc/ssh/
  
 # php
-COPY php.ini /etc/php/7.0/cli/php.ini
-COPY www.conf /etc/php/7.0/fpm/pool.d/www.conf
+#COPY php.ini /etc/php/7.0/cli/php.ini
+#COPY www.conf /etc/php/7.0/fpm/pool.d/www.conf
 
 # nginx
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY hostingstart.html /home/site/wwwroot/index.html
 
 # phpmyadmin
-COPY phpmyadmin-config.inc.php $PHPMYADMIN_SOURCE/
-COPY mariadb.cnf /etc/mysql/
+#COPY phpmyadmin-config.inc.php $PHPMYADMIN_SOURCE/
+#COPY mariadb.cnf /etc/mysql/
 
 RUN \
    echo "<?php phpinfo();" > /home/site/wwwroot/index.php 
